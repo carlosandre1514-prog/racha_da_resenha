@@ -1,4 +1,4 @@
-name: Gerar APK do Racha
+name: Diagnostico de Pastas
 
 on:
   push:
@@ -7,53 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  debug:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixa o código do seu repositório
       - name: Baixar codigo do projeto
         uses: actions/checkout@v4
 
-      # 2. Configura o Java na máquina virtual
-      - name: Configurar Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      # 3. Configura o Flutter estável na máquina virtual
-      - name: Configurar Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-
-      # 4. Mostra as pastas no painel (para conferência se der erro)
-      - name: Verificar estrutura de pastas
-        run: ls -R
-
-      # 5. Baixa as dependências procurando a pasta certa automaticamente
-      - name: Baixar dependencias do App
+      # Esse comando vai nos mostrar exatamente onde está o pubspec.yaml
+      - name: Escanear todas as pastas do repositorio
         run: |
-          if [ -f "pubspec.yaml" ]; then
-            flutter pub get
-          else
-            cd */ && flutter pub get
-          fi
-
-      # 6. Compila o código e gera o APK final
-      - name: Fabricar APK Release
-        run: |
-          if [ -f "pubspec.yaml" ]; then
-            flutter build apk --release
-          else
-            cd */ && flutter build apk --release
-          fi
-
-      # 7. Salva o APK pronto para você baixar
-      - name: Disponibilizar APK para Download
-        uses: actions/upload-artifact@v4
-        with:
-          name: Racha_da_Resenha_APK
-          path: "**/build/app/outputs/flutter-apk/app-release.apk"
+          echo "=== ONDE ESTOU ==="
+          pwd
+          echo "=== LISTA DE ARQUIVOS NA RAIZ ==="
+          ls -la
+          echo "=== BUSCANDO PUBSPEC.YAML EM TODO LUGAR ==="
+          find . -name "pubspec.yaml"
