@@ -29,17 +29,21 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      # 4. Baixa todas as dependências (Supabase, Google Fonts, etc)
+      # 4. Baixa todas as dependências entrando na pasta correta
       - name: Baixar dependencias do App
-        run: flutter pub get
+        run: |
+          cd racha_da_resenha
+          flutter pub get
 
-      # 5. Compila o código e gera o APK final
+      # 5. Compila o código entrando na pasta correta
       - name: Fabricar APK Release
-        run: flutter build apk --release
+        run: |
+          cd racha_da_resenha
+          flutter build apk --release
 
-      # 6. Salva o APK pronto na aba do GitHub (Atualizado para v4 ✅)
+      # 6. Salva o APK pronto que está dentro da subpasta
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
         with:
           name: Racha_da_Resenha_APK
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: racha_da_resenha/build/app/outputs/flutter-apk/app-release.apk
