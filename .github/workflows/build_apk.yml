@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixa o código do seu repositório
+      # 1. Baixa o código do seu repositório (os arquivos já estão na raiz)
       - name: Baixar codigo do projeto
         uses: actions/checkout@v4
 
@@ -29,21 +29,17 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      # 4. Baixa todas as dependências entrando na pasta correta
+      # 4. Baixa todas as dependências direto na raiz
       - name: Baixar dependencias do App
-        run: |
-          cd racha_da_resenha
-          flutter pub get
+        run: flutter pub get
 
-      # 5. Compila o código entrando na pasta correta
+      # 5. Compila o código e gera o APK final
       - name: Fabricar APK Release
-        run: |
-          cd racha_da_resenha
-          flutter build apk --release
+        run: flutter build apk --release
 
-      # 6. Salva o APK pronto que está dentro da subpasta
+      # 6. Salva o APK pronto localizado na raiz do build
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
         with:
           name: Racha_da_Resenha_APK
-          path: racha_da_resenha/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
