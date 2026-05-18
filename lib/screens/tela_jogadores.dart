@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:racha_da_resenha/models/jogador.dart';
 import 'package:racha_da_resenha/services/banco_service.dart';
 
 class TelaJogadores extends StatefulWidget {
@@ -13,7 +12,6 @@ class _TelaJogadoresState extends State<TelaJogadores> {
   final BancoService _bancoService = BancoService();
   final TextEditingController _controleNome = TextEditingController();
 
-  // Função que abre a caixinha para digitar o nome do jogador
   void _abrirDialogoAdicionar(BuildContext context) {
     showDialog(
       context: context,
@@ -48,7 +46,6 @@ class _TelaJogadoresState extends State<TelaJogadores> {
                     nome: _controleNome.text.trim(),
                   );
                   
-                  // Salva no banco de dados online
                   await _bancoService.salvarJogadorNoBanco(novoJogador);
                   
                   _controleNome.clear();
@@ -63,7 +60,6 @@ class _TelaJogadoresState extends State<TelaJogadores> {
     );
   }
 
-  // Função de exemplo para a lógica do Sorteador
   void _realizarSorteio(List<Jogador> jogadores) {
     if (jogadores.length < 2) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,7 +68,6 @@ class _TelaJogadoresState extends State<TelaJogadores> {
       return;
     }
     
-    // Aqui vai entrar a sua regra de separar mensalistas/avulsos ou posições
     final listaEmbaralhada = List<Jogador>.from(jogadores)..shuffle();
     
     showModalBottomSheet(
@@ -119,12 +114,12 @@ class _TelaJogadoresState extends State<TelaJogadores> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Color(0xffa147ff), size: 28),
-            onPressed: () => _abrirDialogoAdicionar(context), // Agora o botão funciona!
+            onPressed: () => _abrirDialogoAdicionar(context),
           )
         ],
       ),
       body: StreamBuilder<List<Jogador>>(
-        stream: _bancoService.escutarJogadoresDoBanco(), // Puxa dados do Supabase
+        stream: _bancoService.escutarJogadoresDoBanco(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(color: Color(0xffa147ff)));
@@ -147,7 +142,7 @@ class _TelaJogadoresState extends State<TelaJogadores> {
               ListView.builder(
                 padding: const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 80),
                 itemCount: listaJogadores.length,
-                itemKind: (context, index) {
+                itemBuilder: (context, index) { // Corrigido de itemKind para itemBuilder ✅
                   final jogador = listaJogadores[index];
                   return Card(
                     color: const Color(0xff161722),
@@ -163,7 +158,6 @@ class _TelaJogadoresState extends State<TelaJogadores> {
                   );
                 },
               ),
-              // Botão do Sorteador flutuando na tela
               Positioned(
                 bottom: 16,
                 left: 16,

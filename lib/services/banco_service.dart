@@ -1,5 +1,26 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:racha_da_resenha/models/jogador.dart';
+
+// Modelo do Jogador embutido para evitar erros de import
+class Jogador {
+  final String id;
+  final String nome;
+
+  Jogador({required this.id, required this.nome});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nome': nome,
+    };
+  }
+
+  factory Jogador.fromMap(Map<String, dynamic> map) {
+    return Jogador(
+      id: map['id']?.toString() ?? '',
+      nome: map['nome']?.toString() ?? '',
+    );
+  }
+}
 
 class BancoService {
   final SupabaseClient _supabase = Supabase.instance.client;
