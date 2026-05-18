@@ -1,0 +1,29 @@
+name: racha_da_resenha
+description: "Aplicativo de gerenciamento e sorteio de times para o racha."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Conexao com o Banco de Dados Online
+  supabase_flutter: ^2.6.0
+  
+  # Fontes do app
+  google_fonts: ^6.1.0
+  
+  # Icones bonitos para o menu e botoes
+  font_awesome_flutter: ^10.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
